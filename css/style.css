@@ -1,0 +1,10 @@
+body {
+  font-family: tahoma;
+  font-size: 14px;
+}
+.fl_l {
+  float: left
+}
+.fl_r {
+  float: right
+}
