@@ -35,7 +35,7 @@
       </select>
     </div> 
     <div class="input_wrap" id="balance_wrap" style="display: none;">
-      <input type="text" placeholder="Баланс" id="balance" class="inp">
+      <input type="text" placeholder="Баланс" id="balance" class="inp" onkeyup="onlyInt(this);">
       <small>Например: 10.4</small>
     </div>
     <div class="input_wrap">

@@ -12,7 +12,7 @@
       </div>
       <div class="input_wrap">
       	<label>Цена:</label>
-        <input type="text" class="inp" id="product_price">
+        <input type="text" class="inp" id="product_price" onkeyup="onlyInt(this);">
         <small>Например: 10.2</small>
       </div>
       <div class="input_wrap">

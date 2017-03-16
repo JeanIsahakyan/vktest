@@ -76,6 +76,7 @@ body {
   float: left;
   transition: all 200ms ease-in-out;
   cursor: pointer;
+  text-align: center;
 }
 .nav ul li a:hover,
 .nav ul li a.active {
@@ -219,4 +220,13 @@ body {
 }
 .box_content .input_wrap .inp {
   width: calc(100% - 30px);
+}
+.product {
+  background: white;
+  margin: 10px 5px;
+  border-radius: 3px;
+  width: 430px;
+  float: left;
+  padding: 20px;
+  word-break: break-all;
 }

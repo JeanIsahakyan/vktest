@@ -8,20 +8,18 @@ function _sqlInit($server = false)
   if (!$server) {
     $server = 'default';
   }
-
-  $connection = $SQL_INITED[$server];
-
-  if (!$connection) {
+  
+  if (!isset($SQL_INITED[$server])) {
 
     $config = $MYSQL_SERVERS[$server];
 
-    $SQL_INITED[$server] = $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD'], $config['DB_TABLE']);
+    $SQL_INITED[$server]  = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD'], $config['DB_TABLE']);
 
     if (mysqli_connect_errno()) {
       die('Connecting to MySQL failed: '.mysqli_connect_error());
     }
   }
-  return $connection;
+  return $SQL_INITED[$server];
 }
 
 function sqlQuery($query, $server = false)

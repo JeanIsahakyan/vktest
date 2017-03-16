@@ -221,10 +221,11 @@ function addProductFinish(hash) {
    $.post('/index.php?act=add_product', query, function(res) { 
      delete cur.productAddLoading;
      btnLoader('#add_product_box_btn');
-
-     switch(res) {
+     res = res.split('|');
+     switch(res[0]) {
       case 'ok':
          addProductClose();
+         $('#balance').text(res[1]);
          navGo('/'); 
         break;
       case 'title':
@@ -239,9 +240,22 @@ function addProductFinish(hash) {
           showError('Неправильный формат цены');
           return inputError('#product_price'); 
          break;
+        case 'low_price':
+          return showError('У Вас недостаточно средств');
+          break;
      }
    })
 
+}
+function onlyInt(el) {
+  if(el.timeout) clearTimeout(el.timeout);
+
+  el.timeout = setTimeout(function(){
+    var val =  Number(el.value.replace(/[^0-9.]/g, ""));
+    if(!isNaN(val)) {
+      el.value = val;
+    }
+  }, 400);
 }
 
 function addProduct(hash) {

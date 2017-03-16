@@ -2,10 +2,10 @@
   <ul>
     <li><a href="/" class="<?php if (!$_GET['finished']) {
       echo 'active';
-      } ?>" onclick="navGo(this, event);">Все продукты</a></li>
+      } ?>" onclick="navGo(this, event); btnLoader(this);">Все продукты</a></li>
     <li><a href="/?finished=1" class="<?php if ($_GET['finished']) {
       echo 'active';
-      } ?>" onclick="navGo(this, event);">Выполненные</a></li>
+      } ?>" onclick="navGo(this, event); btnLoader(this);">Выполненные</a></li>
     <?php
     if ($owner['type'] == 2) {
       echo '<li><button class="btn" onclick="addProduct(\''.genHash('addProduct').'\');" id="add_product">Добавить заказ</button></li>';

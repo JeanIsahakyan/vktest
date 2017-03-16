@@ -122,7 +122,7 @@ if (!$owner) {
 } else {
   switch ($act) {
     case 'a_product_box':
-        if ($_POST['hash'] != genHash('addProduct')){
+        if ($_POST['hash'] != genHash('addProduct') || $owner['type'] != 2) {
           die('error');
         }
         include('tpl/add_product_box.php');
@@ -133,7 +133,7 @@ if (!$owner) {
        exit;
       break;
     case 'add_product':
-      if ($_POST['hash'] != genHash('addProduct')){
+      if ($_POST['hash'] != genHash('addProduct') || $owner['type'] != 2) {
         die('error');
       }
 
@@ -141,13 +141,29 @@ if (!$owner) {
       $descr = str($_POST['descr']);
       $price = (float) $_POST['price'];
 
-      if (empty($title) || strlen($title) < 10) {
+      if (empty($title) || strlen($title) < 4) {
         die('title');
       } elseif (empty($descr) || strlen($descr) < 40) {
         die('descr');
       } elseif (!$price) {
         die('price');
+      } elseif ($price > $owner['balance']) {
+        die('low_price');
       }
+      $balance = ($owner['balance'] - $price);
+
+      sqlQuery('INSERT INTO `products`
+                SET title = "'.$title.'",
+                   descr = "'.$descr.'",
+                   price = "'.$price.'",
+                   owner_id = "'.$owner['id'].'"
+                   ');
+
+     sqlQuery('UPDATE `users`
+              SET balance = "'.$balance.'"
+              WHERE id = "'.$owner['id'].'"');
+
+       die('ok|'.$balance);
 
       break;
     case 'submit_product':
