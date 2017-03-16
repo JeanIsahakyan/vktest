@@ -48,5 +48,8 @@ function sqlEscape($string)
   global $SQL_INITED;
   return $SQL_INITED ? mysqli_real_escape_string($SQL_INITED, $string) : addslashes($string);
 }
-
+function str($str)
+{
+ return sqlEscape(trim(htmlspecialchars($str)));
+}
 ?>

@@ -1,10 +1,132 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
 body {
   font-family: tahoma;
   font-size: 14px;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 50px;
+  background-color: #fbfbfb;
+  color: #474b4e;
 }
 .fl_l {
   float: left
 }
 .fl_r {
   float: right
+}
+.container {
+  width: 960px;
+  margin: 0 auto;
+}
+.header {
+  background: #7598ae;
+  min-height: 40px;
+}
+.clear:after {
+  content: '';
+  clear: both;
+  display: block;
+}
+.header ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.header ul li a {
+  display: block;
+  float: left;
+  padding: 14px 13px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 100ms ease-in-out;
+  text-decoration: none;
+}
+.header ul li a:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  color: #777;
+  height: 20px;
+  padding: 10px 0;
+  background-color: #f5f5f5;
+}
+.nav {
+  background: #fff;
+  display: block;
+  padding: 0 10px;
+  border-radius: 3px;
+}
+.nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.nav ul li a {
+  position: relative;
+  margin: 0 2px;
+  text-decoration: none;
+  color: #52545d;
+  padding: 15px;
+  float: left;
+  transition: all 200ms ease-in-out;
+  cursor: pointer;
+}
+.nav ul li a:hover,
+.nav ul li a.active {
+  box-shadow: inset 0 -2px 0 0 #7598ae;
+  color: #7598ae;
+}
+.nav_content {
+	display: none;
+}
+.nav_content.active {
+	display: block;
+}
+.btn {
+  border: none;
+  overflow: hidden; 
+  padding: 5px 18px; 
+  cursor: pointer;
+  font-size: 12px; 
+  transition: all 60ms ease-in-out; 
+  text-align: center; 
+  white-space: nowrap; 
+  text-decoration: none !important; 
+  color: #FFFFFF; 
+  background: #3ac569;
+  border-radius: 3px; 
+  min-height: 21px; 
+}
+.btn:hover {
+  transition: all 60ms ease;
+  opacity: 0.85;
+  color: #fff;
+}
+.btn:active,
+.btn:focus {
+  opacity: 0.75;
+  padding: 6px 18px 4px;
+}
+.inp {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 3px;
+  display: block;
+}
+.input_wrap {
+  margin-bottom: 10px;
+}
+.input_wrap .inp {
+  width: 260px;
+}
+.login_container {
+  width: 300px;
+  margin: auto;
 }
