@@ -167,3 +167,56 @@ body {
   padding: 3px;
   border-radius: 3px;
 }
+.show_more {
+  display: block;
+  margin: 18px auto;
+  width: 130px;
+}
+.nav .btn {
+	float: right;
+	margin: 10px;
+}
+.not_found {
+  padding: 70px;
+  text-align: center;
+}
+.box_back {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  background-color: #0009;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.box_main {
+	margin: 10vh auto;
+	background: #e9e9e9;
+	width: 550px;
+	min-height: 100px;
+}
+.box_title {
+  padding: 16px 14px;
+  background: #7598ae;
+  color: #fff;
+  position: relative;
+}
+.box_close {
+  position: absolute;
+  font-size: 20px;
+  right: 15px;
+  top: 12px;
+  cursor: pointer;
+  transition: color 100ms ease-in-out;
+}
+.box_close:hover {
+ color: #ccc;
+}
+.box_content {
+	padding: 10px;
+}
+.box_content .input_wrap .inp {
+  width: calc(100% - 30px);
+}

@@ -14,7 +14,7 @@
       <input type="text" placeholder="Пароль" id="login_pass" class="inp">
     </div>
     <div class="input_wrap">
-      <button class="btn" onclick="submitLogin()">Войти</button>
+      <button class="btn" onclick="submitLogin()" id="login_btn">Войти</button>
     </div>
   </div>
 </div>
@@ -45,7 +45,7 @@
       <input type="text" placeholder="Пароль" id="reg_pass" class="inp">
     </div>
     <div class="input_wrap">
-      <button class="btn" onclick="submitRegister();">Зарегистрироваться</button>
+      <button class="btn" onclick="submitRegister();" id="register_btn">Зарегистрироваться</button>
     </div>
   </div>
 </div>

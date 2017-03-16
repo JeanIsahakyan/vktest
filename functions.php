@@ -77,8 +77,15 @@ function str($str)
 {
  return sqlEscape(trim(htmlspecialchars($str)));
 }
-function changeCookie($name, $value = '', $date = 0){
+function changeCookie($name, $value = '', $date = 0)
+{
   $date =  time() + ($date * 86400);
   return setcookie($name, $value, $date, "/", '.'.$_SERVER['HTTP_HOST'], null, true);
+}
+
+function genHash($str = '')
+{
+  global $owner;
+  return md5($str.$_SERVER['REMOTE_ADDR'].$owner['id']);
 }
 ?>

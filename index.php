@@ -12,6 +12,10 @@ if (isset($_COOKIE['auth_hash'])) {
                              balance 
                          FROM `users`
                          WHERE auth_hash = "'.$auth_hash.'"');
+  if (!$owner) {
+    changeCookie('auth_hash', '', 0);
+    header('Location: /');
+  }
   unset($auth_hash);
 }else {
   $owner = false;
@@ -21,7 +25,7 @@ $act = $_GET['act'];
 
 ob_start();
 
-if(!$owner) {
+if (!$owner) {
   switch ($act) {
     case 'login':
         $email = sqlEscape(strip_tags($_POST['email']));
@@ -117,32 +121,64 @@ if(!$owner) {
   }
 } else {
   switch ($act) {
+    case 'a_product_box':
+        if ($_POST['hash'] != genHash('addProduct')){
+          die('error');
+        }
+        include('tpl/add_product_box.php');
+        die(ob_get_clean());
+      break;
     case 'logout':
        changeCookie('auth_hash', '', 0);
        exit;
       break;
-    case 'add_task':
+    case 'add_product':
+      if ($_POST['hash'] != genHash('addProduct')){
+        die('error');
+      }
+
+      $title = str($_POST['title']);
+      $descr = str($_POST['descr']);
+      $price = (float) $_POST['price'];
+
+      if (empty($title) || strlen($title) < 10) {
+        die('title');
+      } elseif (empty($descr) || strlen($descr) < 40) {
+        die('descr');
+      } elseif (!$price) {
+        die('price');
+      }
+
       break;
-    case 'submit_task':
+    case 'submit_product':
       break;
     default:
         $title = 'Список продуктов';
         $offset = (int) $_POST['offset'];
         $limit = 10;
         if ($owner['type'] == 2){
-           $where = 'owner_id = "'.$owner['id'].'"';
+           $where = 'owner_id = "'.$owner['id'].'"'.($_GET['finished'] ? ' AND user_id != "0"' : '');
         } else {
-          $where = 'user_id = "0"';
+          $where = 'user_id = "'.($_GET['finished'] ? $owner['id'] : 0).'"';
         }
 
         $products = sqlFetch('SELECT title,
                                       descr,
-                                      price 
+                                      price,
+                                      user_id,
+                                      owner_id
                               FROM `products`
                               WHERE '.$where.'
                               ORDER BY `date` DESC
                               LIMIT '.$limit.' 
                               OFFSET '.$offset, true);
+
+
+        $new_offset = $offset + count($products);
+        
+        include ('tpl/products_list.php');
+
+        include('tpl/products.php');
 
         if ($offset) {
           $res = array('content' => ob_get_clean(), 'offset' => $new_offset);
@@ -161,5 +197,10 @@ if (!$title) {
 
 $content = ob_get_clean();
 
-include_once('tpl/main.php');
+if (isset($_POST['ajax'])) {
+  echo json_encode(array('content' => $content, 'title' => $title));
+}else {
+   include_once('tpl/main.php');
+}
+
 ?>

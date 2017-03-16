@@ -12,7 +12,7 @@
 <div class="header clear">
   <div class="container">
   	<ul>
-      <li><a href="/">Logo</a></li>
+      <li><a href="/" onclick="navGo(this, event);">Logo</a></li>
   	</ul>
     <ul class="fl_r right_nav_wrap">
       <?php
@@ -26,7 +26,7 @@
     </ul>
   </div>
 </div>
-<div class="container">
+<div class="container" id="content">
 <?php 
  echo $content;
 ?></div>
