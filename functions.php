@@ -1,31 +1,44 @@
 <?php
 
-$SQL_INITED = false;
+$SQL_INITED = array();
  
-function _sqlInit()
+function _sqlInit($server = false)
 {
-  global $SQL_INITED;
-  if (!$SQL_INITED) {
-    $SQL_INITED = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_TABLE);
+  global $SQL_INITED, $MYSQL_SERVERS;
+  if (!$server) {
+    $server = 'default';
+  }
+
+  $connection = $SQL_INITED[$server];
+
+  if (!$connection) {
+
+    $config = $MYSQL_SERVERS[$server];
+
+    $SQL_INITED[$server] = $connection = mysqli_connect($config['DB_HOST'], $config['DB_USERNAME'], $config['DB_PASSWORD'], $config['DB_TABLE']);
+
     if (mysqli_connect_errno()) {
       die('Connecting to MySQL failed: '.mysqli_connect_error());
     }
   }
-  return $SQL_INITED;
+  return $connection;
 }
 
-function sqlQuery($query)
+function sqlQuery($query, $server = false)
 {
-  global $SQL_INITED;
-  $res = mysqli_query(_sqlInit(), $query);
+  $connection = _sqlInit($server);
+
+  $res = mysqli_query($connection, $query);
+  
   if (!$res) {
-    die("MySQL query failed: {$query} <br> ".mysqli_error($SQL_INITED));
+    die("MySQL query failed: {$query} <br> ".mysqli_error($connection));
   }
+  return $res;
 }
 
-function sqlFetch ($query, $multiple = false)
+function sqlFetch ($query, $multiple = false, $server = false)
 {
-  $res = sqlQuery($query);
+  $res = sqlQuery($query, $server);
 
   if ($multiple) {
     $rows = array();
@@ -35,20 +48,31 @@ function sqlFetch ($query, $multiple = false)
   }else {
     $rows = mysqli_fetch_assoc($res);
   }
+  
+  mysqli_free_result($res);
+
   return $rows;
 }
 
-function sqlId()
+function sqlId($server = false)
 {
-  global $SQL_INITED;
-  return $SQL_INITED ? mysqli_insert_id($SQL_INITED) : false;
+  $connection = _sqlInit($server);
+
+  return $connection ? mysqli_insert_id($connection) : false;
 }
 
-function sqlEscape($string)
+function sqlEscape($string, $server = false)
 {
-  global $SQL_INITED;
-  return $SQL_INITED ? mysqli_real_escape_string($SQL_INITED, $string) : addslashes($string);
+  $connection = _sqlInit($server);
+  return $connection ? mysqli_real_escape_string($connection, $string) : addslashes($string);
 }
+
+function sqlCloseConnection($server = false)
+{
+  $connection = _sqlInit($server);
+  return $connection ? mysqli_close($connection) : false;
+}
+
 function str($str)
 {
  return sqlEscape(trim(htmlspecialchars($str)));

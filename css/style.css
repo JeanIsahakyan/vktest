@@ -148,7 +148,22 @@ body {
   z-index: 11;
   transition: opacity 200ms ease-in-out;
 }
-.main_error.active{
+.main_error.active {
   visibility: visible;
   opacity: 1;
+}
+.right_nav_wrap {
+  width: 300px;
+}
+.right_nav_wrap li a {
+  float: right !important;
+}
+.balance {
+  background: none !important;
+}
+.balance span {
+  background: white;
+  color: #5e85a2;
+  padding: 3px;
+  border-radius: 3px;
 }

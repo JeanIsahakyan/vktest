@@ -45,6 +45,8 @@ if(!$owner) {
 
           changeCookie('auth_hash', $hash, 365);
           die('ok');
+        }else {
+          die('unknown');
         }
       break;
 
@@ -63,29 +65,51 @@ if(!$owner) {
 
       if (!$type) { // 0
         die('type');
+      } elseif ($type == 2 && !$balance) {
+        die('balance');
       }
 
 
       $email = sqlEscape(strip_tags($_POST['email']));
-      $pass  = md5($_POST['pass']);
+      $pass  = trim($_POST['pass']);
 
       if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         die('email');
+      }
+
+      $check = sqlFetch('SELECT 
+                        COUNT(id) as cnt
+                        FROM `users`
+                        WHERE email = "'.$email.'"');
+      
+      if ($check['cnt']) {
+        die('used_email');
       }
 
       if (empty($pass) || strlen($pass) < 6) {
         die('pass');
       }
 
-    
-       $hash = md5($_SERVER['REMOTE_ADDR'].time());
-        changeCookie('auth_hash', $hash, 365);
+
+      $hash = md5($_SERVER['REMOTE_ADDR'].time());
+  
+      sqlQuery('INSERT INTO `users`
+                SET first_name = "'.$first_name.'",
+                    last_name = "'.$last_name.'",
+                    type = "'.$type.'",
+                    balance = "'.$balance.'",
+                    email = "'.$email.'",
+                    pass = "'.md5($pass).'",
+                    auth_hash = "'.$hash.'"');
+
+      if (sqlId()) {
+           changeCookie('auth_hash', $hash, 365);;
+           die ('ok');
+      } else {
+        die ('unknown');
+      }
       break;
 
-   case 'login':
-      
-      break;
-    
     default:
       $title = 'Вход';
       include_once('tpl/not_logged.php');
@@ -93,12 +117,38 @@ if(!$owner) {
   }
 } else {
   switch ($act) {
+    case 'logout':
+       changeCookie('auth_hash', '', 0);
+       exit;
+      break;
     case 'add_task':
       break;
     case 'submit_task':
       break;
     default:
-   
+        $title = 'Список продуктов';
+        $offset = (int) $_POST['offset'];
+        $limit = 10;
+        if ($owner['type'] == 2){
+           $where = 'owner_id = "'.$owner['id'].'"';
+        } else {
+          $where = 'user_id = "0"';
+        }
+
+        $products = sqlFetch('SELECT title,
+                                      descr,
+                                      price 
+                              FROM `products`
+                              WHERE '.$where.'
+                              ORDER BY `date` DESC
+                              LIMIT '.$limit.' 
+                              OFFSET '.$offset, true);
+
+        if ($offset) {
+          $res = array('content' => ob_get_clean(), 'offset' => $new_offset);
+          echo json_encode($res);
+          exit;
+        }
       break;
   }
 }

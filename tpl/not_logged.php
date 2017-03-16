@@ -34,18 +34,18 @@
         <option value="2">Заказчик</option>
       </select>
     </div> 
-    <div class="input_wrap">
-      <input type="text" placeholder="Баланс" id="login_email" class="inp">
+    <div class="input_wrap" id="balance_wrap" style="display: none;">
+      <input type="text" placeholder="Баланс" id="balance" class="inp">
       <small>Например: 10.4</small>
     </div>
     <div class="input_wrap">
-      <input type="text" placeholder="Email" id="login_email" class="inp">
+      <input type="text" placeholder="Email" id="reg_email" class="inp">
     </div>
     <div class="input_wrap">
-      <input type="text" placeholder="Пароль" id="auth_pass" class="inp">
+      <input type="text" placeholder="Пароль" id="reg_pass" class="inp">
     </div>
     <div class="input_wrap">
-      <button class="btn">Войти</button>
+      <button class="btn" onclick="submitRegister();">Зарегистрироваться</button>
     </div>
   </div>
 </div>

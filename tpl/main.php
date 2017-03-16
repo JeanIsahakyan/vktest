@@ -14,12 +14,13 @@
   	<ul>
       <li><a href="/">Logo</a></li>
   	</ul>
-    <ul class="fl_r">
+    <ul class="fl_r right_nav_wrap">
       <?php
       if ($owner) {
-      	echo '<li><a  href="/" onclick="logOut(); return false;" >Выйти</a></li>';
+      	echo '<li><a  href="/" onclick="logOut(); return false;" >Выйти</a></li>
+              <li><a class="balance">Баланс:  <span id="balance">'.$owner['balance'].'</span></a></li>';
       } else {
-
+      	
       }
       ?>
     </ul>
