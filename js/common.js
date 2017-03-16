@@ -15,7 +15,7 @@ function inputError(inp, color) {
 function showError(text, focus){
     if(!this.cnt) this.cnt = 0;
     var cnt = this.cnt;
-    $('#main_errors').append('<div class="main_error" id="main_error_'+cnt+'">'+text+'</div>');
+    $('#main_errors').append('<div class="main_error '+(focus ? 'green' : '')+'" id="main_error_'+cnt+'">'+text+'</div>');
     setTimeout(function() {
       $('#main_error_'+cnt).addClass('active');
     },100); 
@@ -180,13 +180,17 @@ function showMoreProducts(offset) {
   cur.showMoreLoading = true;
   btnLoader('#show_more');
  $.post(location.href, {offset: offset}, function(res) {
+ 
   delete cur.showMoreLoading;
+  btnLoader('#show_more');
+  
   res = JSON.parse(res);
-  if(res.content.length != 0) {
+  if (res.content.length != 0) {
       dbtn.offset = res.offset;
       $('#products_list').append(res.content);
+  } else {
+    $('#show_more').hide();
   }
-
  });
 }
 
@@ -278,6 +282,25 @@ function addProduct(hash) {
 function addProductClose(){
  $('#add_product_box').remove();
  $('body, html').css('overflow','');
+}
+
+function submitProduct(id, hash) {
+  if(cur.submitProductLoading) return;
+  
+  cur.submitProductLoading = true;
+  btnLoader('#product_btn' + id);
+  $.post('/index.php?act=submit_product', {id: id, hash: hash}, function(res){
+    delete cur.submitProductLoading;
+    btnLoader('#product_btn' + id);
+    if (res == 'error') {
+      return showError('Не удалось выполнить действие');
+    } else {
+      res =  JSON.parse(res);
+      $('#balance').text(res.balance);
+      showError('За выполнение Вам было зачислено '+res.price , true);
+      $('#product'+id).slideUp();
+    } 
+  });
 }
 
 window.onload = function(){

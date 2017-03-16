@@ -167,6 +167,7 @@ if (!$owner) {
 
       break;
     case 'submit_product':
+
       break;
     default:
         $title = 'Список продуктов';
@@ -178,7 +179,8 @@ if (!$owner) {
           $where = 'user_id = "'.($_GET['finished'] ? $owner['id'] : 0).'"';
         }
 
-        $products = sqlFetch('SELECT title,
+        $products = sqlFetch('SELECT id,
+                                      title,
                                       descr,
                                       price,
                                       user_id,
@@ -187,20 +189,20 @@ if (!$owner) {
                               WHERE '.$where.'
                               ORDER BY `date` DESC
                               LIMIT '.$limit.' 
-                              OFFSET '.$offset, true);
+                              OFFSET '.$offset, true, 'server1'); // fetching from other server
 
 
         $new_offset = $offset + count($products);
         
         include ('tpl/products_list.php');
 
-        include('tpl/products.php');
-
         if ($offset) {
-          $res = array('content' => ob_get_clean(), 'offset' => $new_offset);
+          $res = array('content' => ($products ? $products_list : ''), 'offset' => $new_offset);
           echo json_encode($res);
           exit;
         }
+        include('tpl/products.php');
+
       break;
   }
 }

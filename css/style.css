@@ -149,6 +149,9 @@ body {
   z-index: 11;
   transition: opacity 200ms ease-in-out;
 }
+.main_error.green {
+	background: #3ac569;
+}
 .main_error.active {
   visibility: visible;
   opacity: 1;
@@ -229,4 +232,14 @@ body {
   float: left;
   padding: 20px;
   word-break: break-all;
+  height: 140px;
+}
+.product_submit {
+	margin-top: 5px;
+}
+.product_price {
+  color: #747474;
+}
+.product_title {
+	margin:0 0 5px;
 }

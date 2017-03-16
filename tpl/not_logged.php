@@ -11,7 +11,7 @@
       <input type="text" placeholder="Email" id="login_email" class="inp">
     </div>
     <div class="input_wrap">
-      <input type="text" placeholder="Пароль" id="login_pass" class="inp">
+      <input type="password" placeholder="Пароль" id="login_pass" class="inp">
     </div>
     <div class="input_wrap">
       <button class="btn" onclick="submitLogin()" id="login_btn">Войти</button>

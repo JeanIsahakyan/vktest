@@ -8,7 +8,7 @@ function _sqlInit($server = false)
   if (!$server) {
     $server = 'default';
   }
-  
+
   if (!isset($SQL_INITED[$server])) {
 
     $config = $MYSQL_SERVERS[$server];
@@ -17,6 +17,10 @@ function _sqlInit($server = false)
 
     if (mysqli_connect_errno()) {
       die('Connecting to MySQL failed: '.mysqli_connect_error());
+    } else {
+
+      sqlQuery('SET NAMES utf8');
+      
     }
   }
   return $SQL_INITED[$server];

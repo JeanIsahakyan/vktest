@@ -13,7 +13,7 @@
     ?>
   </ul>
 </div>
-<div id="products_list">
+<div id="products_list" class="clear">
   <?php echo $products_list;?>
 </div>
 <div class="show_more">
