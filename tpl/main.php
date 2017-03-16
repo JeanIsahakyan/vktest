@@ -8,6 +8,7 @@
   <script type="text/javascript" src="/js/common.js"></script>
 </head>
 <body>
+<div class="main_errors_wrap" id="main_errors"></div>
 <div class="header clear">
   <div class="container">
   	<ul>

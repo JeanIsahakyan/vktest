@@ -16,9 +16,10 @@ function _sqlInit()
 
 function sqlQuery($query)
 {
+  global $SQL_INITED;
   $res = mysqli_query(_sqlInit(), $query);
   if (!$res) {
-    die("MySQL query failed: {$query} <br> ".mysqli_error());
+    die("MySQL query failed: {$query} <br> ".mysqli_error($SQL_INITED));
   }
 }
 
@@ -32,7 +33,7 @@ function sqlFetch ($query, $multiple = false)
       $rows[] = $row;
     }
   }else {
-    $rows = mysql_fetch_assoc($res);
+    $rows = mysqli_fetch_assoc($res);
   }
   return $rows;
 }
@@ -40,7 +41,7 @@ function sqlFetch ($query, $multiple = false)
 function sqlId()
 {
   global $SQL_INITED;
-  return $SQL_INITED ? mysql_insert_id($SQL_INITED) : false;
+  return $SQL_INITED ? mysqli_insert_id($SQL_INITED) : false;
 }
 
 function sqlEscape($string)
@@ -51,5 +52,9 @@ function sqlEscape($string)
 function str($str)
 {
  return sqlEscape(trim(htmlspecialchars($str)));
+}
+function changeCookie($name, $value = '', $date = 0){
+  $date =  time() + ($date * 86400);
+  return setcookie($name, $value, $date, "/", '.'.$_SERVER['HTTP_HOST'], null, true);
 }
 ?>

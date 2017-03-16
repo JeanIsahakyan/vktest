@@ -130,3 +130,25 @@ body {
   width: 300px;
   margin: auto;
 }
+.main_errors_wrap {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  max-width: 400px;
+  z-index: 111;
+}
+.main_error {
+  visibility: hidden; 
+  background: #df6a6a;
+  opacity: 0; 
+  color: #fff; 
+  padding: 10px; 
+  border-radius: 5px; 
+  margin: 11px; 
+  z-index: 11;
+  transition: opacity 200ms ease-in-out;
+}
+.main_error.active{
+  visibility: visible;
+  opacity: 1;
+}
