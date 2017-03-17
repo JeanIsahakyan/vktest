@@ -242,9 +242,27 @@ if (!$owner) {
 
     case 'submit_product':
       $id = (int) $_POST['id'];
+      
       if ($_POST['hash'] != genHash('product'.$id) || $owner['type'] != 1) {
         die ('error');
       }
+
+
+      $mem = new Memcached;
+      $mem->addServer($MEM_HOST, $MEM_PORT);
+
+      $time = $_SERVER['REQUEST_TIME'];
+
+      $key = 'submit_flood'.$time.$owner['id'];
+
+      if (!$mem->set($key, 1, 1)) {
+        $mem->increment($key);
+      }
+
+      if ($mem->get($key) > 2) {
+        die('flood');
+      }
+
       $product = sqlFetch('SELECT price 
                            FROM `products`
                            WHERE id="'.$id.'"

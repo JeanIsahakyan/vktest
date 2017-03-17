@@ -298,6 +298,8 @@ function submitProduct(id, hash) {
     btnLoader('#product_btn' + id);
     if (res == 'error') {
       return showError('Не удалось выполнить действие');
+    } else if(res == 'flood') {
+      return showError('Вы слишком часто выполняете это действие');
     } else {
       res =  JSON.parse(res);
       $('#balance').text(res.balance);
