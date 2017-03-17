@@ -17,7 +17,7 @@
     <ul class="fl_r right_nav_wrap">
       <?php
       if ($owner) {
-      	echo '<li><a  href="/" onclick="logOut(); return false;" >Выйти</a></li>
+      	echo '<li><a  href="/" onclick="logOut(\''.genHash('logOut').'\'); return false;" >Выйти</a></li>
               <li><a href="/?act=statistics" onclick="navGo(this, event);">Статистика</a></li>
               <li><a class="balance">Баланс:  <span id="balance">'.$owner['balance'].'</span></a></li>';
       }

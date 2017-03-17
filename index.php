@@ -122,13 +122,16 @@ if (!$owner) {
 } else {
   switch ($act) {
     case 'a_product_box':
-        if ($_POST['hash'] != genHash('addProduct') || $owner['type'] != 2) {
+        if ($owner['type'] != 2) {
           die('error');
         }
         include('tpl/add_product_box.php');
         die(ob_get_clean());
       break;
     case 'logout':
+       if ($_POST['hash'] != genHash('logOut')) {
+        die('error'); 
+       } 
        changeCookie('auth_hash', '', 0);
        exit;
       break;

@@ -151,8 +151,9 @@ function submitRegister() {
 
      });
 }
-function logOut() {
-  $.post('/index.php?act=logout', function() {
+function logOut(hash) {
+  $.post('/index.php?act=logout', {hash: hash}, function(res) {
+    if (res == 'error')  return showError('ОШИБКА ДОСТУПА');
     location.reload();
   })
 }
