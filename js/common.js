@@ -170,7 +170,7 @@ function btnLoader(btn) {
   }
 }
 
-function showMoreProducts(offset) {
+function showMoreProducts(offset, stats) {
   if (cur.showMoreLoading) return;
 
  var btn = $('#show_more'), dbtn = btn.get(0);
@@ -187,7 +187,7 @@ function showMoreProducts(offset) {
   res = JSON.parse(res);
   if (res.content.length != 0) {
       dbtn.offset = res.offset;
-      $('#products_list').append(res.content);
+      $('#'+ (stats ? 'stats' : 'products') +'_list').append(res.content);
   } else {
     $('#show_more').hide();
   }

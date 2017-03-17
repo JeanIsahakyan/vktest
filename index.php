@@ -166,6 +166,69 @@ if (!$owner) {
        die('ok|'.$balance);
 
       break;
+    case 'statistics':
+      $title = 'Статистика';
+      $limit = 10;
+      $offset = (int)$_POST['offset'];
+      $statistics = sqlFetch('SELECT product_id,
+                                     user_id,
+                                     commission
+                                     FROM `system_commission`
+                                     ORDER BY `commission`
+                                     DESC LIMIT '.$limit.'
+                                    OFFSET '.$offset, true); 
+      
+      $new_offset = count($statistics) + $offset;
+
+      $products = $users = array();
+
+      if ($statistics) {
+        $uids = $products_ids = array();
+        foreach($statistics as $stat) {
+            $uids[$stat['user_id']] = true;
+            $products_ids[] = $stat['product_id'];
+        }
+
+        $products_list = sqlFetch('SELECT title,
+                                          id,
+                                          owner_id,
+                                          price
+                                    FROM `products` 
+                                    WHERE id IN('.join(',', $products_ids).')', true, 'server1'); //other server
+        if ($products_list) {
+          foreach ($products_list as $product) {
+            $products[$product['id']] = $product;
+            $uids[$product['owner_id']] = true;
+          }
+        }
+
+        $users_list = sqlFetch('SELECT first_name,
+                                       last_name,
+                                       id
+                               FROM `users`
+                               WHERE id IN('.join(',', array_keys($uids)).')', true);
+        if ($users_list) {
+          foreach ($users_list as $user) {
+            $users[$user['id']] = $user;
+          }
+        }
+
+        unset($stat, $products_list, $products_ids, $uids, $users_list, $user);
+      }
+
+      include('tpl/stats_item.php');
+
+      if ($offset) {
+        $res = array('content' => $stats_list, 'offset' => $new_offset);
+        echo json_encode($res);
+        exit;
+      }
+
+      include('tpl/stats_main.php');
+
+
+      break;
+
     case 'submit_product':
       $id = (int) $_POST['id'];
       if ($_POST['hash'] != genHash('product'.$id) || $owner['type'] != 1) {

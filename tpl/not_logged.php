@@ -1,10 +1,10 @@
 <div class="nav clear">
   <ul>
-    <li><a onclick="switchTab('login');" id="login_tab">Войти</a></li>
+    <li><a onclick="switchTab('login');" id="login_tab" class="active">Войти</a></li>
     <li><a onclick="switchTab('register');" id="register_tab">Регистрация</a></li>
   </ul>
 </div>
-<div class="nav_content" id="login_content">
+<div class="nav_content active" id="login_content">
   <div class="login_container">
     <h3>Вход</h3>
     <div class="input_wrap">
