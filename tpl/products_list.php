@@ -5,13 +5,13 @@ if ($products) {
 
    if ($owner['type'] == 1) { 
     $prc = $row['price'] * ($SYSTEM_COMMISSION / 100);
-    $submit = '<small >С учетом комиссии: '.($row['price'] - $prc).'</small>';
+    $submit = '<small >С учетом комиссии: '.round($row['price'] - $prc, 2).'</small>';
     if (!$row['user_id']) {
       $submit .= '<button class="btn fl_r" onclick="submitProduct('.$row['id'].', \''.genHash('product'.$row['id']).'\')" id="product_btn'.$row['id'].'">Выполнить</button>';
     }
    } elseif ($owner['type'] == 2 && $row['user_id']) {
     $u  = $user[$row['user_id']];
-    $submit = '<small style="color: #2fba5e">Выполнил: '. $u['first_name'].' '.$u['last_name'].'</small>';
+    $submit = '<small style="color: #2fba5e">Выполнил: <b>'. $u['first_name'].' '.$u['last_name'].'</b></small>';
    }
 
   $products_list .= '<div class="product clear" id="product'.$row['id'].'">

@@ -157,7 +157,7 @@ if (!$owner) {
                    descr = "'.$descr.'",
                    price = "'.$price.'",
                    owner_id = "'.$owner['id'].'"
-                   ');
+                   ', 'server1'); // other server
 
      sqlQuery('UPDATE `users`
               SET balance = "'.$balance.'"
@@ -167,13 +167,51 @@ if (!$owner) {
 
       break;
     case 'submit_product':
+      $id = (int) $_POST['id'];
+      if ($_POST['hash'] != genHash('product'.$id) || $owner['type'] != 1) {
+        die ('error');
+      }
+      $product = sqlFetch('SELECT price 
+                           FROM `products`
+                           WHERE id="'.$id.'"
+                           AND user_id = "0"', false, 'server1'); //other server
+      if (!$product) {
+         die('error');
+      }
+
+      $system = $product['price'] * ($SYSTEM_COMMISSION / 100);
+      $user = round($product['price'] - $system, 2);
+
+      $changed = sqlQuery('UPDATE `products`
+                SET user_id ="'.$owner['id'].'"
+                WHERE id = "'.$id.'"
+                AND user_id = "0"', 'server1'); //other server
+
+      if (!$changed) {
+        die('error');
+      }
+
+      sqlQuery('INSERT INTO `system_commission`
+                SET commission = "'.$system.'",
+                    product_id = "'.$id.'",
+                    user_id = "'.$owner['id'].'" ');
+
+      $balance = round($owner['balance'] + $user);
+
+      sqlQuery('UPDATE `users`
+                SET balance = "'.$balance.'"
+                WHERE id = "'.$owner['id'].'"');
+
+      $res = array('balance' => $balance, 'price' => $user);
+      echo json_encode($res);
+      exit;
 
       break;
     default:
         $title = 'Список продуктов';
         $offset = (int) $_POST['offset'];
         $limit = 10;
-        if ($owner['type'] == 2){
+        if ($owner['type'] == 2) {
            $where = 'owner_id = "'.$owner['id'].'"'.($_GET['finished'] ? ' AND user_id != "0"' : '');
         } else {
           $where = 'user_id = "'.($_GET['finished'] ? $owner['id'] : 0).'"';
@@ -191,6 +229,29 @@ if (!$owner) {
                               LIMIT '.$limit.' 
                               OFFSET '.$offset, true, 'server1'); // fetching from other server
 
+        if ($owner['type'] == 2 && $products) {
+          $uids = $users = array();
+
+          foreach($products as $uid) {
+            if ($uid['user_id']) {
+              $uids[] = $uid['user_id'];
+            } 
+          }
+
+          if ($uids) {
+
+            $users_data = sqlFetch('SELECT first_name,
+                                         last_name,
+                                         id
+                                  FROM  `users`
+                                  WHERE id IN('.join(',', $uids).')', true);
+
+            foreach($users_data as $uid) {
+              $user[$uid['id']] = $uid;
+            }
+            unset($users_data, $uid, $uids);
+          }
+        }
 
         $new_offset = $offset + count($products);
         
