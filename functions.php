@@ -20,7 +20,7 @@ function _sqlInit($server = false)
     } else {
 
       sqlQuery('SET NAMES utf8');
-      
+
     }
   }
   return $SQL_INITED[$server];
@@ -90,4 +90,6 @@ function genHash($str = '')
   global $owner;
   return md5($str.$_SERVER['REMOTE_ADDR'].$owner['id']);
 }
+
+
 ?>

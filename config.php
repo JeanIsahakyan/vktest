@@ -20,4 +20,8 @@ $MYSQL_SERVERS['server1'] = array( // other server
 
 $SYSTEM_COMMISSION = 10; // == 10%
 
+
+$MEM_HOST = 'localhost';
+$MEM_PORT = 11211;
+
 ?>

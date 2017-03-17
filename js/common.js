@@ -233,6 +233,9 @@ function addProductFinish(hash) {
          $('#balance').text(res[1]);
          navGo('/'); 
         break;
+      case 'flood':
+          return showError('Можно добавлять только один продукт в минуту!');
+         break;
       case 'title':
           showError('Название слишком короткое');
           return inputError('#product_title'); 
@@ -268,7 +271,7 @@ function addProduct(hash) {
 
   btnLoader('#add_product');
   cur.productBoxLoading = true;
-  $.post('/index.php?act=a_product_box', {hash: hash}, function(res){
+  $.post('/index.php?act=add_product_box', {hash: hash}, function(res){
     delete cur.productBoxLoading;
     btnLoader('#add_product');
     if (res == 'error') {

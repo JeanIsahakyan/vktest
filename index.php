@@ -121,7 +121,7 @@ if (!$owner) {
   }
 } else {
   switch ($act) {
-    case 'a_product_box':
+    case 'add_product_box':
         if ($owner['type'] != 2) {
           die('error');
         }
@@ -138,6 +138,13 @@ if (!$owner) {
     case 'add_product':
       if ($_POST['hash'] != genHash('addProduct') || $owner['type'] != 2) {
         die('error');
+      }
+
+      $mem = new Memcached;
+      $mem->addServer($MEM_HOST, $MEM_PORT);
+
+      if (!$mem->add('product_flood'.$owner['id'], 1, 60)) { 
+        die('flood');
       }
 
       $title = str($_POST['title']);

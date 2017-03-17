@@ -1,9 +1,9 @@
 <div class="nav clear">
   <ul>
-    <li><a href="/" class="<?php if (!$_GET['finished']) {
+    <li><a href="/" class="<?php if (!isset($_GET['finished'])) {
       echo 'active';
       } ?>" onclick="navGo(this, event); btnLoader(this);">Все продукты</a></li>
-    <li><a href="/?finished=1" class="<?php if ($_GET['finished']) {
+    <li><a href="/?finished=1" class="<?php if (isset($_GET['finished'])) {
       echo 'active';
       } ?>" onclick="navGo(this, event); btnLoader(this);">Выполненные</a></li>
     <?php
