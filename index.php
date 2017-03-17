@@ -143,10 +143,6 @@ if (!$owner) {
       $mem = new Memcached;
       $mem->addServer($MEM_HOST, $MEM_PORT);
 
-      if (!$mem->add('product_flood'.$owner['id'], 1, 60)) { 
-        die('flood');
-      }
-
       $title = str($_POST['title']);
       $descr = str($_POST['descr']);
       $price = (float) $_POST['price'];
@@ -160,6 +156,11 @@ if (!$owner) {
       } elseif ($price > $owner['balance']) {
         die('low_price');
       }
+
+      if (!$mem->add('product_flood'.$owner['id'], 1, 60)) { 
+        die('flood');
+      }
+
       $balance = ($owner['balance'] - $price);
 
       sqlQuery('INSERT INTO `products`
