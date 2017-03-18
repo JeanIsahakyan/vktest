@@ -21,7 +21,7 @@ if (isset($_COOKIE['auth_hash'])) {
   $owner = false;
 }
 
-$act = $_GET['act'];
+$act = (!empty($_GET['act'])) ? $_GET['act'] : false;
 
 ob_start();
 
@@ -301,12 +301,12 @@ if (!$owner) {
       break;
     default:
         $title = 'Список продуктов';
-        $offset = (int) $_POST['offset'];
+        $offset = (isset($_POST['offset'])) ? $_POST['offset'] : 0;
         $limit = 10;
         if ($owner['type'] == 2) {
            $where = 'owner_id = "'.$owner['id'].'"'.($_GET['finished'] ? ' AND user_id != "0"' : '');
         } else {
-          $where = 'user_id = "'.($_GET['finished'] ? $owner['id'] : 0).'"';
+          $where = 'user_id = "'.(isset($_GET['finished']) ? $owner['id'] : 0).'"';
         }
 
         $products = sqlFetch('SELECT id,
